@@ -67,7 +67,7 @@ function VerifyForm() {
   function verifyCode(code: string) {
     // Demo: any 6-digit code passes
     setLoading(true);
-    setTimeout(() => router.push("/face-capture"), 1200);
+    setTimeout(() => router.push("/onboarding"), 1200);
   }
 
   function onSubmit(e: React.FormEvent) {
