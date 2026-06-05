@@ -1,43 +1,22 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, ArrowLeft, CheckCircle2 } from "lucide-react";
+import { Phone, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
+  const router = useRouter();
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
-  const [sent, setSent] = useState(false);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSent(true); }, 1200);
-  }
-
-  if (sent) {
-    return (
-      <div className="space-y-6 text-center">
-        <div className="md:hidden mb-2 flex justify-start">
-          <img src="/attend-logo.png" alt="Attend" style={{ height: 31 }} />
-        </div>
-        <div className="mx-auto inline-flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100">
-          <CheckCircle2 className="h-7 w-7 text-emerald-600" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Check your email</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            We sent a reset link to <span className="font-medium text-foreground">{email}</span>.
-            It expires in 10 minutes.
-          </p>
-        </div>
-        <Link href="/login">
-          <Button fullWidth variant="outline">
-            <ArrowLeft className="h-4 w-4" /> Back to sign in
-          </Button>
-        </Link>
-      </div>
+    setTimeout(
+      () => router.push(`/verify?phone=${encodeURIComponent(phone || "+234 800 000 0000")}`),
+      1000
     );
   }
 
@@ -50,30 +29,31 @@ export default function ForgotPasswordPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Forgot password?</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Enter your email and we&apos;ll send you a reset link.
+          Enter your phone number and we&apos;ll send you a verification code.
         </p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
         <Input
-          name="email"
-          label="Email"
-          type="email"
-          autoComplete="email"
-          leftIcon={<Mail className="h-4 w-4" />}
-          placeholder="you@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="phone"
+          label="Phone number"
+          type="tel"
+          autoComplete="tel"
+          leftIcon={<Phone className="h-4 w-4" />}
+          placeholder="+234 800 000 0000"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
         />
-        <Button type="submit" fullWidth size="lg" loading={loading} disabled={!email.trim()}>
-          {loading ? "Sending…" : "Send reset link"}
+        <Button type="submit" fullWidth size="lg" loading={loading} disabled={!phone.trim()}>
+          {loading ? "Sending code…" : "Send OTP"}
         </Button>
       </form>
 
       <p className="text-center text-sm text-muted-foreground">
         Remembered it?{" "}
         <Link href="/login" className="font-semibold text-foreground hover:underline">
-          Sign in
+          <ArrowLeft className="inline h-3.5 w-3.5 mr-0.5" />
+          Back to sign in
         </Link>
       </p>
     </div>
