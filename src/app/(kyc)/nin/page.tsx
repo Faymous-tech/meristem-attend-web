@@ -4,9 +4,11 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { FileCheck2 } from "lucide-react";
+import { useUserStore } from "@/lib/user-store";
 
 export default function NinPage() {
   const router = useRouter();
+  const { setKycStatus } = useUserStore();
   const [nin, setNin] = useState("");
   const [loading, setLoading] = useState(false);
   const isValid = /^\d{11}$/.test(nin);
@@ -14,7 +16,7 @@ export default function NinPage() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => router.push("/chn"), 1200);
+    setTimeout(() => { setKycStatus("basic"); router.push("/chn"); }, 1200);
   }
 
   return (

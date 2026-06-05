@@ -8,8 +8,8 @@ import { initialsFor } from "@/lib/utils";
 const FEATURES = [
   {
     icon: Building2,
-    color: "#2563eb",
-    bg: "#eff6ff",
+    color: "#111827",
+    bg: "#f3f4f6",
     title: "AGM Voting",
     desc: "Participate in Annual General Meetings, vote on resolutions, and appoint proxies as a verified shareholder.",
     href: "/agm",

@@ -21,7 +21,7 @@ const TILES = [
     description: "Vote at shareholder meetings",
     href: "/agm",
     icon: Building2,
-    gradient: "from-blue-600 to-blue-800",
+    gradient: "from-gray-800 to-gray-950",
   },
   {
     label: "Launches",
@@ -74,7 +74,7 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       {/* Hero / user card */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] p-6 text-white md:p-8">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#111827] via-[#1f2937] to-[#374151] p-6 text-white md:p-8">
         <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10" />
         <div className="absolute -bottom-20 -left-10 h-56 w-56 rounded-full bg-white/5" />
         <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
