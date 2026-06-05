@@ -2,20 +2,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock } from "lucide-react";
+import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("ngozi.okafor@email.com");
-  const [password, setPassword] = useState("attend123");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => router.push("/"), 1200);
+    setTimeout(
+      () => router.push(`/verify?phone=${encodeURIComponent(phone || "+234 800 000 0000")}`),
+      1000
+    );
   }
 
   return (
@@ -27,40 +29,23 @@ export default function LoginPage() {
       <div>
         <h1 className="text-2xl font-bold text-foreground">Welcome back</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Sign in to access your events, meetings and challenges.
+          Enter your phone number and we&apos;ll send you a sign-in code.
         </p>
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
         <Input
-          name="email"
-          label="Email"
-          type="email"
-          autoComplete="email"
-          leftIcon={<Mail className="h-4 w-4" />}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          name="phone"
+          label="Phone number"
+          type="tel"
+          autoComplete="tel"
+          leftIcon={<Phone className="h-4 w-4" />}
+          placeholder="+234 800 000 0000"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
         />
-        <Input
-          name="password"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          leftIcon={<Lock className="h-4 w-4" />}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className="flex items-center justify-between text-sm">
-          <label className="flex items-center gap-2 text-muted-foreground cursor-pointer">
-            <input type="checkbox" className="h-4 w-4 rounded border-border accent-foreground" />
-            Remember me
-          </label>
-          <Link href="/forgot-password" className="font-medium text-foreground hover:underline">
-            Forgot password?
-          </Link>
-        </div>
         <Button type="submit" fullWidth size="lg" loading={loading}>
-          {loading ? "Signing in…" : "Sign in"}
+          {loading ? "Sending code…" : "Send OTP"}
         </Button>
       </form>
 
