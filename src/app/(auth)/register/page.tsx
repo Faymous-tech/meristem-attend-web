@@ -23,7 +23,7 @@ export default function RegisterPage() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => router.push("/verify"), 1200);
+    setTimeout(() => router.push(`/verify?phone=${encodeURIComponent(form.phone || "+234 800 000 0000")}`), 1200);
   }
 
   return (
