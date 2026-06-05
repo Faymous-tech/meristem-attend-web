@@ -17,7 +17,7 @@ import { MOCK_USER } from "@/lib/mock-data";
 const NAV = [
   { label: "Home", href: "/", icon: House, match: (p: string) => p === "/" },
   { label: "AGM", href: "/agm", icon: Building2, match: (p: string) => p.startsWith("/agm") },
-  { label: "Challenges", href: "/hackathon", icon: Lightbulb, match: (p: string) => p.startsWith("/hackathon") },
+  { label: "Innovation", href: "/hackathon", icon: Lightbulb, match: (p: string) => p.startsWith("/hackathon") },
   { label: "Launches", href: "/events", icon: Rocket, match: (p: string) => p.startsWith("/events") },
   { label: "Profile", href: "/profile", icon: UserIcon, match: (p: string) => p.startsWith("/profile") },
 ];
