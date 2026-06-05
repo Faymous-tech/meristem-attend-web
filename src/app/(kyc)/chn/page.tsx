@@ -40,12 +40,24 @@ export default function ChnPage() {
         hint="Alphanumeric, at least 10 characters."
       />
 
+      <p className="text-xs text-muted-foreground">
+        Don&apos;t have a CHN?{" "}
+        <button
+          type="button"
+          className="underline underline-offset-2 hover:text-foreground transition-colors"
+          onClick={() => router.push("/liveness")}
+        >
+          Skip for now
+        </button>
+        {" "}— you can add it later from your profile.
+      </p>
+
       <div className="flex gap-3">
         <Button
           type="button"
           variant="outline"
           fullWidth
-          onClick={() => router.push("/nin")}
+          onClick={() => router.push("/bvn")}
         >
           Back
         </Button>

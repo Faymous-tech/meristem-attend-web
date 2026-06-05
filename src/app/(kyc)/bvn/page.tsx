@@ -14,7 +14,7 @@ export default function BvnPage() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => router.push("/nin"), 1200);
+    setTimeout(() => router.push("/chn"), 1200);
   }
 
   return (

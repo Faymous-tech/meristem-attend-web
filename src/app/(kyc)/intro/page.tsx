@@ -20,8 +20,8 @@ export default function KycIntroPage() {
       <div className="space-y-3">
         {[
           { icon: Fingerprint, t: "BVN", d: "Your 11-digit Bank Verification Number" },
-          { icon: FileCheck2, t: "NIN", d: "Your 11-digit National Identification Number" },
-          { icon: Lock, t: "CHN", d: "Your CSCS Clearing House Number" },
+          { icon: Lock, t: "CHN (Optional)", d: "Your CSCS Clearing House Number — can be skipped and added later" },
+          { icon: FileCheck2, t: "Liveness Check", d: "A quick face scan to confirm you are the account holder" },
         ].map(({ icon: Icon, t, d }) => (
           <div
             key={t}

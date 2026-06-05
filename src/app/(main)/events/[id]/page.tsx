@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn, formatDate, initialsFor } from "@/lib/utils";
 
-type Tab = "about" | "agenda" | "speakers";
+type Tab = "about" | "resolutions";
 
 const SAVED_KEY = "attend_saved_events";
 
@@ -135,7 +135,7 @@ export default function EventDetailPage({
       </header>
 
       <div className="flex gap-1 border-b border-border">
-        {(["about", "agenda", "speakers"] as Tab[]).map((t) => (
+        {(["about", "resolutions"] as Tab[]).map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
@@ -165,10 +165,10 @@ export default function EventDetailPage({
         </section>
       )}
 
-      {tab === "agenda" && (
+      {tab === "resolutions" && (
         <section>
           <ol className="space-y-2 border-l border-border pl-4">
-            {event.agenda.map((a, i) => (
+            {event.agenda.map((a) => (
               <li key={a.id} className="relative">
                 <span className="absolute -left-[21px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-primary bg-white" />
                 <div className="rounded-xl border border-border bg-white p-3">
@@ -180,26 +180,6 @@ export default function EventDetailPage({
               </li>
             ))}
           </ol>
-        </section>
-      )}
-
-      {tab === "speakers" && (
-        <section className="grid gap-3 sm:grid-cols-2">
-          {event.speakers.map((s) => (
-            <div
-              key={s.id}
-              className="flex items-center gap-3 rounded-2xl border border-border bg-white p-4"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                {initialsFor(s.name)}
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-foreground">{s.name}</p>
-                <p className="text-xs text-muted-foreground">{s.title}</p>
-                <p className="text-xs text-muted-foreground">{s.company}</p>
-              </div>
-            </div>
-          ))}
         </section>
       )}
     </div>
