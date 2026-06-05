@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   Building2,
@@ -12,7 +13,6 @@ import {
 } from "lucide-react";
 import { MOCK_USER, MOCK_EVENTS } from "@/lib/mock-data";
 import { useUserStore } from "@/lib/user-store";
-import { Badge } from "@/components/ui/Badge";
 import { cn, formatDate, greetingByHour, initialsFor } from "@/lib/utils";
 
 const TILES = [
@@ -46,27 +46,36 @@ const TILES = [
   },
 ];
 
-const ANNOUNCEMENTS = [
-  {
-    title: "Vote opens for Zenith Bank AGM",
-    body: "Resolutions 1–4 will be available for voting from 10:00am on May 28.",
-    tag: "AGM",
-  },
-  {
-    title: "MeriHack 2026 applications closing",
-    body: "Get your team submission in before July 18 to qualify for the ₦5m grand prize.",
-    tag: "Innovation",
-  },
-  {
-    title: "MeriSave Launch — set a reminder",
-    body: "The MeriSave digital savings product launches virtually on June 15.",
-    tag: "Launch",
-  },
-];
+const CAROUSEL_IMAGES: Record<string, string> = {
+  LAUNCH:   "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=900&q=80",
+  HACKATHON:"https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80",
+  GENERAL:  "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=900&q=80",
+};
+
+const MODULE_BADGE: Record<string, { label: string; bg: string }> = {
+  LAUNCH:   { label: "Product Launch",      bg: "#ea6c00" },
+  HACKATHON:{ label: "Innovation Challenge", bg: "#7c22c9" },
+  GENERAL:  { label: "General Event",        bg: "#0891b2" },
+};
+
+const carouselEvents = MOCK_EVENTS.filter(
+  (e) => e.module === "LAUNCH" || e.module === "HACKATHON"
+);
 
 export default function HomePage() {
   const { kycStatus } = useUserStore();
   const verified = kycStatus === "full";
+
+  const [activeSlide, setActiveSlide] = useState(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => {
+    if (carouselEvents.length <= 1) return;
+    timerRef.current = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % carouselEvents.length);
+    }, 4000);
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  }, []);
 
   const liveEvent = MOCK_EVENTS.find((e) => e.status === "live");
   const upcoming = MOCK_EVENTS.filter((e) => e.status === "upcoming").slice(0, 4);
@@ -170,27 +179,88 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Announcements */}
+      {/* Featured Events Carousel */}
       <section>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            Announcements
+            Featured Events
           </h2>
+          <Link href="/events" className="text-xs font-semibold text-primary hover:underline">
+            See all
+          </Link>
         </div>
-        <div className="no-scrollbar -mx-4 flex gap-3 overflow-x-auto px-4 pb-2 md:mx-0 md:px-0">
-          {ANNOUNCEMENTS.map((a, i) => (
-            <article
-              key={i}
-              className="min-w-[260px] max-w-xs rounded-2xl border border-border bg-white p-4 shadow-sm"
-            >
-              <Badge variant="default">{a.tag}</Badge>
-              <h3 className="mt-3 text-sm font-semibold leading-snug text-foreground">
-                {a.title}
-              </h3>
-              <p className="mt-1 text-xs text-muted-foreground">{a.body}</p>
-            </article>
-          ))}
+
+        <div className="relative overflow-hidden rounded-3xl" style={{ height: 240 }}>
+          <div
+            className="flex h-full transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${activeSlide * 100}%)` }}
+          >
+            {carouselEvents.map((event) => {
+              const badge = MODULE_BADGE[event.module] ?? MODULE_BADGE.GENERAL;
+              const imageUri = CAROUSEL_IMAGES[event.module] ?? CAROUSEL_IMAGES.GENERAL;
+              const href = event.module === "HACKATHON" ? "/hackathon" : `/events/${event.id}`;
+              return (
+                <Link
+                  key={event.id}
+                  href={href}
+                  className="relative h-full w-full flex-shrink-0"
+                  style={{ minWidth: "100%" }}
+                >
+                  {/* Photo */}
+                  <img
+                    src={imageUri}
+                    alt={event.title}
+                    className="h-full w-full object-cover"
+                  />
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/80" />
+
+                  {/* Module badge */}
+                  <div className="absolute left-4 top-4">
+                    <span
+                      className="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold text-white"
+                      style={{ backgroundColor: badge.bg }}
+                    >
+                      {badge.label}
+                    </span>
+                  </div>
+
+                  {/* Bottom content */}
+                  <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-3 p-4">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-bold text-white leading-snug">
+                        {event.title.split("—")[1]?.trim() ?? event.title}
+                      </p>
+                      <p className="mt-0.5 text-xs text-white/75">{event.organiser}</p>
+                      <p className="text-xs text-white/60">
+                        {formatDate(event.date)} · {event.format}
+                      </p>
+                    </div>
+                    <span className="shrink-0 rounded-xl border border-white/30 bg-white/20 px-3 py-1.5 text-xs font-semibold text-white backdrop-blur">
+                      {event.rsvpStatus ? "Registered" : "Register"}
+                    </span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </div>
+
+        {/* Dot indicators */}
+        {carouselEvents.length > 1 && (
+          <div className="mt-3 flex justify-center gap-1.5">
+            {carouselEvents.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setActiveSlide(i)}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  i === activeSlide ? "w-5 bg-foreground" : "w-1.5 bg-gray-300"
+                )}
+              />
+            ))}
+          </div>
+        )}
       </section>
 
       {/* Upcoming */}
