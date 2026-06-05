@@ -19,7 +19,7 @@ export default function HackathonDetailPage({
   return (
     <div className="space-y-6">
       <Link href="/hackathon" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to challenges
+        <ArrowLeft className="h-4 w-4" /> Back to Innovation
       </Link>
 
       <header className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-purple-700 to-fuchsia-700 p-6 text-white md:p-8">

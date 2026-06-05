@@ -86,7 +86,7 @@ export default function HackathonPage() {
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search challenges, tracks or sponsors"
+          placeholder="Search innovation challenges, tracks or sponsors"
           className="h-11 w-full rounded-xl border border-input bg-white pl-10 pr-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:border-primary"
         />
       </div>

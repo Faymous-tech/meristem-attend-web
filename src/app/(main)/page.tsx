@@ -32,7 +32,7 @@ const TILES = [
   },
   {
     label: "Innovation",
-    description: "Hackathons & challenges",
+    description: "Innovation challenges",
     href: "/hackathon",
     icon: Lightbulb,
     gradient: "from-purple-600 to-fuchsia-600",
