@@ -2,12 +2,12 @@
 import Link from "next/link";
 import {
   Building2, CalendarDays, MapPin,
-  Users, ShieldCheck, XCircle,
+  Users, XCircle, Vote, ChevronRight,
 } from "lucide-react";
 import { MOCK_EVENTS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
-import { formatDate, initialsFor } from "@/lib/utils";
+import { formatDate } from "@/lib/utils";
 
 export default function AgmPage() {
   const agms = MOCK_EVENTS.filter((e) => e.module === "AGM");
@@ -63,11 +63,8 @@ function AgmCard({ event: e }: { event: (typeof MOCK_EVENTS)[0] }) {
   return (
     <li className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
       <div className="flex flex-col gap-4 p-5 md:flex-row md:items-start">
-        <div
-          className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl text-lg font-bold text-white"
-          style={{ background: e.thumbnailColor }}
-        >
-          {initialsFor(e.organiser)}
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-100">
+          <Building2 className="h-5 w-5 text-slate-500" />
         </div>
 
         <div className="flex-1 space-y-3">
@@ -80,7 +77,12 @@ function AgmCard({ event: e }: { event: (typeof MOCK_EVENTS)[0] }) {
                 {e.title}
               </h2>
             </div>
-            {e.rsvpStatus === "confirmed" ? (
+            {e.status === "live" ? (
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-red-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-red-700">
+                <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-red-600" />
+                Live
+              </span>
+            ) : e.rsvpStatus === "confirmed" ? (
               <Badge variant="success">Confirmed</Badge>
             ) : (
               <Badge variant="muted">{e.format}</Badge>
@@ -110,16 +112,15 @@ function AgmCard({ event: e }: { event: (typeof MOCK_EVENTS)[0] }) {
 
           <div className="pt-1">
             {onRegister ? (
-              <div className="flex flex-wrap gap-2">
-                <Link href="/agm/proxy">
-                  <Button variant="outline" size="sm">Appoint proxy</Button>
-                </Link>
+              <div className="flex gap-2">
                 <Link href="/agm/pre-vote">
-                  <Button variant="outline" size="sm">Pre-vote</Button>
+                  <Button size="sm" className="flex-1 bg-slate-900 text-white hover:bg-slate-800 border-0">
+                    <Vote className="h-3.5 w-3.5 mr-1.5" /> Pre-vote
+                  </Button>
                 </Link>
-                <Link href="/agm/live">
-                  <Button size="sm" className="gap-1.5">
-                    <ShieldCheck className="h-3.5 w-3.5" /> Enter meeting
+                <Link href={`/events/${e.id}`}>
+                  <Button size="sm" className="flex-1 bg-slate-900 text-white hover:bg-slate-800 border-0">
+                    <ChevronRight className="h-3.5 w-3.5 mr-1.5" /> View
                   </Button>
                 </Link>
               </div>
@@ -138,7 +139,7 @@ function AgmCard({ event: e }: { event: (typeof MOCK_EVENTS)[0] }) {
                   </div>
                 </div>
                 <Link href={`/events/${e.id}`}>
-                  <Button variant="outline" size="sm">View event details</Button>
+                  <Button variant="outline" size="sm" className="bg-slate-900 text-white hover:bg-slate-800 border-0 w-full">View</Button>
                 </Link>
               </div>
             )}

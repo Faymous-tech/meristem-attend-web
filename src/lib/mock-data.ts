@@ -30,7 +30,7 @@ export const MOCK_EVENTS: Event[] = [
     id: "evt_001", module: "AGM", title: "Zenith Bank Plc — 2026 Annual General Meeting",
     organiser: "Zenith Bank Plc", description: "The 2026 Annual General Meeting of Zenith Bank Plc, open to all registered shareholders. Agenda includes financial report approval, dividend declaration, director elections, and auditor appointments.",
     date: "2026-05-28", startTime: "10:00", endTime: "14:00", format: "hybrid",
-    venue: "Civic Centre, Victoria Island, Lagos", status: "upcoming", capacity: 5000,
+    venue: "Civic Centre, Victoria Island, Lagos", status: "live", capacity: 5000,
     rsvpCount: 2847, rsvpStatus: "confirmed", thumbnailColor: "#1a6b3c", onRegister: true,
     tags: ["Banking", "Finance", "Regulatory"],
     speakers: [{ id: "spk_001", name: "Dr. Ebenezer Onyeagwu", title: "Group MD & CEO", company: "Zenith Bank Plc" }],

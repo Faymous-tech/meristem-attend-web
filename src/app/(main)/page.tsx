@@ -130,21 +130,37 @@ export default function HomePage() {
         )}
       </section>
 
-      {/* Live banner */}
+      {/* Live AGM card */}
       {liveEvent && (
-        <Link
-          href={`/agm/live`}
-          className="flex items-center justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 hover:bg-red-100"
-        >
-          <span className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-600" />
-            </span>
-            <Radio className="h-4 w-4" /> Live now — {liveEvent.title}
-          </span>
-          <ChevronRight className="h-4 w-4" />
-        </Link>
+        <section>
+          <Link
+            href={liveEvent.module === "AGM" ? "/agm/live" : `/events/${liveEvent.id}`}
+            className="group block overflow-hidden rounded-2xl bg-[#1e293b] p-5 shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="min-w-0 flex-1">
+                <div className="mb-2 flex items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-white">
+                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                    Live Now
+                  </span>
+                  {liveEvent.module === "AGM" && (
+                    <span className="text-xs text-white/50">AGM · {liveEvent.organiser}</span>
+                  )}
+                </div>
+                <p className="text-base font-bold text-white leading-snug md:text-lg">
+                  {liveEvent.title.split("—")[1]?.trim() ?? liveEvent.title}
+                </p>
+                <p className="mt-1 text-xs text-white/50">
+                  {liveEvent.module === "AGM" ? "Voting on Resolution 3 is open · Click to join and vote" : `${liveEvent.rsvpCount.toLocaleString()} watching`}
+                </p>
+              </div>
+              <div className="flex shrink-0 items-center gap-1.5 rounded-xl bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur transition-colors group-hover:bg-white/20">
+                <Radio className="h-4 w-4" /> Join
+              </div>
+            </div>
+          </Link>
+        </section>
       )}
 
       {/* Module tiles */}
