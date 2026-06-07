@@ -120,9 +120,9 @@ export const MOCK_EVENTS: Event[] = [
 ];
 
 export const MOCK_RESOLUTIONS = [
-  { id: "res_001", number: 1, title: "Adoption of Financial Statements", description: "To receive and adopt the audited financial statements for the year ended December 31, 2025.", isSpecial: false, votingOpen: false, votes: { for: 4200000, against: 50000, abstain: 20000 }, userVote: "for" as const },
-  { id: "res_002", number: 2, title: "Declaration of Final Dividend", description: "To declare a final dividend of ₦3.50 per ordinary share.", isSpecial: false, votingOpen: false, votes: { for: 4180000, against: 70000, abstain: 20000 }, userVote: "for" as const },
-  { id: "res_003", number: 3, title: "Re-election of Directors", description: "To re-elect Dr. Adeyemi Okonkwo as a Director.", isSpecial: false, votingOpen: true },
+  { id: "res_001", number: 1, title: "Adoption of Financial Statements", description: "To receive and adopt the audited financial statements for the year ended December 31, 2025.", isSpecial: false, votingOpen: false, votes: { for: 4200000, against: 50000, abstain: 20000 }, userVote: "for" as const, preVote: "for" as const, result: { for: 4200000, against: 50000, abstain: 20000, passed: true } },
+  { id: "res_002", number: 2, title: "Declaration of Final Dividend", description: "To declare a final dividend of ₦3.50 per ordinary share.", isSpecial: false, votingOpen: false, votes: { for: 4180000, against: 70000, abstain: 20000 }, userVote: "for" as const, preVote: "for" as const, result: { for: 4180000, against: 70000, abstain: 20000, passed: true } },
+  { id: "res_003", number: 3, title: "Re-election of Directors", description: "To re-elect Dr. Adeyemi Okonkwo as a Director.", isSpecial: false, votingOpen: true, preVote: "against" as const },
   { id: "res_004", number: 4, title: "Appointment of Auditors", description: "To re-appoint PricewaterhouseCoopers as Auditors.", isSpecial: false, votingOpen: false },
 ];
 

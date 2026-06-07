@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   ArrowLeft,
@@ -12,6 +12,8 @@ import {
   Check,
   X,
   Minus,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 import { MOCK_EVENTS, MOCK_RESOLUTIONS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
@@ -19,15 +21,34 @@ import { cn } from "@/lib/utils";
 
 type Tab = "agenda" | "qa" | "ballot";
 
+const COUNTDOWN_DURATION = 45;
+const openRes = MOCK_RESOLUTIONS.find((r) => r.votingOpen);
+
 export default function LivePage() {
   const event = MOCK_EVENTS.find((e) => e.id === "evt_001")!;
   const [tab, setTab] = useState<Tab>("agenda");
-  const [vote, setVote] = useState<"for" | "against" | "abstain" | null>(null);
+  const [vote, setVote] = useState<"for" | "against" | "abstain" | null>(
+    openRes?.preVote ?? null,
+  );
   const [q, setQ] = useState("");
   const [questions, setQuestions] = useState([
     { id: "q1", who: "Adaeze N.", text: "Will the dividend be paid in cash or scrip?" },
     { id: "q2", who: "Femi A.", text: "What is the bank's outlook on FX volatility for the second half?" },
   ]);
+  const [videoHidden, setVideoHidden] = useState(false);
+  const countdownEndsAt = useRef<number>(Date.now() + COUNTDOWN_DURATION * 1000);
+  const [countdown, setCountdown] = useState(COUNTDOWN_DURATION);
+  const [countdownExpired, setCountdownExpired] = useState(false);
+
+  useEffect(() => {
+    if (!openRes?.votingOpen) return;
+    const t = setInterval(() => {
+      const remaining = Math.max(0, Math.round((countdownEndsAt.current - Date.now()) / 1000));
+      setCountdown(remaining);
+      if (remaining <= 0) { clearInterval(t); setCountdownExpired(true); }
+    }, 1000);
+    return () => clearInterval(t);
+  }, []);
 
   function sendQuestion(e: React.FormEvent) {
     e.preventDefault();
@@ -35,8 +56,6 @@ export default function LivePage() {
     setQuestions((xs) => [...xs, { id: String(Math.random()), who: "You", text: q.trim() }]);
     setQ("");
   }
-
-  const openRes = MOCK_RESOLUTIONS.find((r) => r.votingOpen);
 
   return (
     <div className="space-y-5">
@@ -66,24 +85,68 @@ export default function LivePage() {
       <div className="grid gap-4 lg:grid-cols-5">
         {/* Stream */}
         <div className="lg:col-span-3">
-          <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-900">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_40%)]" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur">
-                <Play className="h-9 w-9 fill-white text-white" />
+          {videoHidden ? (
+            <div className="flex items-center justify-between rounded-2xl bg-slate-900 px-4 py-3">
+              <div className="flex items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-red-600 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+                  <span className="h-1 w-1 rounded-full bg-white" /> Live
+                </span>
+                <p className="text-sm font-semibold text-white line-clamp-1">{event.title}</p>
               </div>
-              <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/80">
-                Live Stream
-              </p>
-              <p className="mt-1 text-xs text-white/50">
-                Now showing: Resolution 3 — Re-election of Directors
+              <button
+                onClick={() => setVideoHidden(false)}
+                className="flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1.5 text-xs font-semibold text-white hover:bg-white/20"
+              >
+                <ChevronDown className="h-3.5 w-3.5" /> Expand
+              </button>
+            </div>
+          ) : (
+            <div className="relative aspect-video overflow-hidden rounded-2xl bg-slate-900">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.08),transparent_40%)]" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/10 backdrop-blur">
+                  <Play className="h-9 w-9 fill-white text-white" />
+                </div>
+                <p className="mt-4 text-sm font-semibold uppercase tracking-[0.3em] text-white/80">
+                  Live Stream
+                </p>
+                <p className="mt-1 text-xs text-white/50">
+                  Now showing: Resolution 3 — Re-election of Directors
+                </p>
+              </div>
+              <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white/80">
+                <span>00:42:18 elapsed</span>
+                <span>HD · 1080p</span>
+              </div>
+              <button
+                onClick={() => setVideoHidden(true)}
+                className="absolute right-3 top-3 flex items-center gap-1 rounded-lg bg-black/40 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-black/60"
+              >
+                <ChevronUp className="h-3.5 w-3.5" /> Minimise
+              </button>
+            </div>
+          )}
+
+          {/* Countdown strip */}
+          {openRes?.votingOpen && (
+            <div
+              className={cn(
+                "mt-2 flex items-center gap-2 rounded-xl px-4 py-2.5 transition-colors",
+                countdownExpired
+                  ? "bg-slate-500"
+                  : countdown <= 10
+                  ? "bg-red-600"
+                  : "bg-amber-500",
+              )}
+            >
+              <Vote className="h-4 w-4 shrink-0 text-white" />
+              <p className="text-sm font-semibold text-white">
+                {countdownExpired
+                  ? `Voting closed — Resolution ${openRes.number}`
+                  : `Voting open · Resolution ${openRes.number} · ${countdown}s remaining`}
               </p>
             </div>
-            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-xs text-white/80">
-              <span>00:42:18 elapsed</span>
-              <span>HD · 1080p</span>
-            </div>
-          </div>
+          )}
 
           <div className="mt-3 grid grid-cols-3 gap-2">
             <div className="rounded-xl border border-border bg-white p-3 text-center">
@@ -155,10 +218,10 @@ export default function LivePage() {
               {tab === "qa" && (
                 <div className="flex h-full flex-col">
                   <ul className="space-y-2">
-                    {questions.map((q) => (
-                      <li key={q.id} className="rounded-xl bg-muted/40 p-3">
-                        <p className="text-xs font-semibold text-foreground">{q.who}</p>
-                        <p className="mt-0.5 text-sm text-muted-foreground">{q.text}</p>
+                    {questions.map((item) => (
+                      <li key={item.id} className="rounded-xl bg-muted/40 p-3">
+                        <p className="text-xs font-semibold text-foreground">{item.who}</p>
+                        <p className="mt-0.5 text-sm text-muted-foreground">{item.text}</p>
                       </li>
                     ))}
                   </ul>
@@ -178,6 +241,37 @@ export default function LivePage() {
 
               {tab === "ballot" && openRes && (
                 <div className="space-y-4">
+                  {openRes.preVote && (
+                    <div
+                      className={cn(
+                        "rounded-xl border px-4 py-3",
+                        openRes.preVote === "for"
+                          ? "border-emerald-200 bg-emerald-50"
+                          : openRes.preVote === "against"
+                          ? "border-red-200 bg-red-50"
+                          : "border-amber-200 bg-amber-50",
+                      )}
+                    >
+                      <p
+                        className={cn(
+                          "text-sm font-semibold capitalize",
+                          openRes.preVote === "for"
+                            ? "text-emerald-700"
+                            : openRes.preVote === "against"
+                            ? "text-red-700"
+                            : "text-amber-700",
+                        )}
+                      >
+                        You previously voted: {openRes.preVote}
+                      </p>
+                      {!countdownExpired && (
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          You can change your vote before the countdown ends
+                        </p>
+                      )}
+                    </div>
+                  )}
+
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-wide text-primary">
                       Resolution {openRes.number}
@@ -189,39 +283,50 @@ export default function LivePage() {
                       {openRes.description}
                     </p>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    {(["for", "against", "abstain"] as const).map((opt) => {
-                      const selected = vote === opt;
-                      const Icon = opt === "for" ? Check : opt === "against" ? X : Minus;
-                      const tone =
-                        opt === "for"
-                          ? "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
-                          : opt === "against"
-                          ? "border-red-200 text-red-700 hover:bg-red-50"
-                          : "border-border text-muted-foreground hover:bg-muted";
-                      const selectedTone =
-                        opt === "for"
-                          ? "bg-emerald-600 text-white border-emerald-600"
-                          : opt === "against"
-                          ? "bg-red-600 text-white border-red-600"
-                          : "bg-slate-700 text-white border-slate-700";
-                      return (
-                        <button
-                          key={opt}
-                          onClick={() => setVote(opt)}
-                          className={cn(
-                            "flex flex-col items-center gap-1 rounded-xl border px-2 py-3 text-xs font-semibold capitalize transition-colors",
-                            selected ? selectedTone : tone,
-                          )}
-                        >
-                          <Icon className="h-4 w-4" /> {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <Button fullWidth disabled={!vote}>
-                    {vote ? `Cast vote: ${vote}` : "Choose an option"}
-                  </Button>
+
+                  {countdownExpired ? (
+                    <div className="rounded-xl bg-muted py-6 text-center">
+                      <p className="text-sm font-semibold text-muted-foreground">
+                        Voting has closed for this resolution.
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["for", "against", "abstain"] as const).map((opt) => {
+                          const selected = vote === opt;
+                          const Icon = opt === "for" ? Check : opt === "against" ? X : Minus;
+                          const tone =
+                            opt === "for"
+                              ? "border-emerald-200 text-emerald-700 hover:bg-emerald-50"
+                              : opt === "against"
+                              ? "border-red-200 text-red-700 hover:bg-red-50"
+                              : "border-border text-muted-foreground hover:bg-muted";
+                          const selectedTone =
+                            opt === "for"
+                              ? "bg-emerald-600 text-white border-emerald-600"
+                              : opt === "against"
+                              ? "bg-red-600 text-white border-red-600"
+                              : "bg-slate-700 text-white border-slate-700";
+                          return (
+                            <button
+                              key={opt}
+                              onClick={() => setVote(opt)}
+                              className={cn(
+                                "flex flex-col items-center gap-1 rounded-xl border px-2 py-3 text-xs font-semibold capitalize transition-colors",
+                                selected ? selectedTone : tone,
+                              )}
+                            >
+                              <Icon className="h-4 w-4" /> {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <Button fullWidth disabled={!vote}>
+                        {vote ? `Cast vote: ${vote}` : "Choose an option"}
+                      </Button>
+                    </>
+                  )}
                 </div>
               )}
             </div>
