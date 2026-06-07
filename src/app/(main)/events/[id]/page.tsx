@@ -20,8 +20,6 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { cn, formatDate, initialsFor } from "@/lib/utils";
 
-type Tab = "about" | "resolutions";
-
 const SAVED_KEY = "attend_saved_events";
 
 function getSaved(): string[] {
@@ -36,7 +34,6 @@ export default function EventDetailPage({
   const { id } = use(params);
   const router = useRouter();
   const event = MOCK_EVENTS.find((e) => e.id === id);
-  const [tab, setTab] = useState<Tab>("about");
   const [rsvp, setRsvp] = useState(event?.rsvpStatus === "confirmed");
   const [saved, setSaved] = useState(false);
   const [shared, setShared] = useState(false);
@@ -134,54 +131,16 @@ export default function EventDetailPage({
         </div>
       </header>
 
-      <div className="flex gap-1 border-b border-border">
-        {(["about", "resolutions"] as Tab[]).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className={cn(
-              "relative px-4 py-3 text-sm font-medium capitalize",
-              tab === t ? "text-primary" : "text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {t}
-            {tab === t && (
-              <span className="absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-primary" />
-            )}
-          </button>
-        ))}
-      </div>
-
-      {tab === "about" && (
-        <section className="space-y-4">
-          <p className="text-sm leading-relaxed text-foreground/80">
-            {event.description}
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {event.tags.map((t) => (
-              <Badge key={t} variant="muted">{t}</Badge>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {tab === "resolutions" && (
-        <section>
-          <ol className="space-y-2 border-l border-border pl-4">
-            {event.agenda.map((a) => (
-              <li key={a.id} className="relative">
-                <span className="absolute -left-[21px] top-1.5 h-2.5 w-2.5 rounded-full border-2 border-primary bg-white" />
-                <div className="rounded-xl border border-border bg-white p-3">
-                  <p className="text-xs text-muted-foreground">
-                    {a.startTime} · {a.duration} min
-                  </p>
-                  <p className="text-sm font-medium text-foreground">{a.title}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
+      <section className="space-y-4">
+        <p className="text-sm leading-relaxed text-foreground/80">
+          {event.description}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {event.tags.map((t) => (
+            <Badge key={t} variant="muted">{t}</Badge>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

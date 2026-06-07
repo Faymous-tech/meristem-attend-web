@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, BellRing, MessageSquare, Mail, Clock } from "lucide-react";
+import { ArrowLeft, BellRing, MessageSquare, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface PrefRow {
@@ -17,20 +17,11 @@ const CHANNELS: PrefRow[] = [
   { key: "email", label: "Email", description: "Notices, agendas and receipts by email.", icon: Mail },
 ];
 
-const REMINDERS: PrefRow[] = [
-  { key: "r7", label: "7 days before", description: "Long-range planning reminder.", icon: Clock },
-  { key: "r1", label: "24 hours before", description: "Day-before nudge.", icon: Clock },
-  { key: "r30", label: "30 minutes before", description: "Last-call reminder.", icon: Clock },
-];
-
 export default function NotificationPreferencesPage() {
   const [prefs, setPrefs] = useState<Record<string, boolean>>({
     push: true,
     sms: false,
     email: true,
-    r7: true,
-    r1: true,
-    r30: false,
   });
 
   function toggle(k: string) {
@@ -51,7 +42,6 @@ export default function NotificationPreferencesPage() {
       </header>
 
       <Section title="Delivery channels" rows={CHANNELS} prefs={prefs} toggle={toggle} />
-      <Section title="Event reminders" rows={REMINDERS} prefs={prefs} toggle={toggle} />
     </div>
   );
 }
