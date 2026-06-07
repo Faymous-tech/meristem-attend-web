@@ -7,34 +7,38 @@ import {
   Users,
   MessageSquare,
   Vote,
-  ListChecks,
   Send,
   Check,
   X,
   Minus,
   ChevronDown,
   ChevronUp,
+  CheckCircle,
 } from "lucide-react";
 import { MOCK_EVENTS, MOCK_RESOLUTIONS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
-type Tab = "agenda" | "qa" | "ballot";
+type Tab = "qa" | "ballot";
 
 const COUNTDOWN_DURATION = 45;
 const openRes = MOCK_RESOLUTIONS.find((r) => r.votingOpen);
 
+const MOCK_QA_QUESTIONS = [
+  { id: "q1", who: "Adaeze N.", time: "10:12 AM", text: "Will the final dividend be paid in cash or scrip, and what is the expected payment timeline?", answered: true },
+  { id: "q2", who: "Femi A.", time: "10:18 AM", text: "What is management's outlook on FX volatility for H2 2026, and how is the bank hedging its dollar-denominated liabilities?", answered: false },
+  { id: "q3", who: "Chidi O.", time: "10:25 AM", text: "Can the board comment on the revenue contribution of the digital banking subsidiary to the group?", answered: false },
+];
+
 export default function LivePage() {
   const event = MOCK_EVENTS.find((e) => e.id === "evt_001")!;
-  const [tab, setTab] = useState<Tab>("agenda");
+  const [tab, setTab] = useState<Tab>("qa");
   const [vote, setVote] = useState<"for" | "against" | "abstain" | null>(
     openRes?.preVote ?? null,
   );
   const [q, setQ] = useState("");
-  const [questions, setQuestions] = useState([
-    { id: "q1", who: "Adaeze N.", text: "Will the dividend be paid in cash or scrip?" },
-    { id: "q2", who: "Femi A.", text: "What is the bank's outlook on FX volatility for the second half?" },
-  ]);
+  const [qSent, setQSent] = useState(false);
+  const [userQuestion, setUserQuestion] = useState("");
   const [videoHidden, setVideoHidden] = useState(false);
   const countdownEndsAt = useRef<number>(Date.now() + COUNTDOWN_DURATION * 1000);
   const [countdown, setCountdown] = useState(COUNTDOWN_DURATION);
@@ -53,7 +57,8 @@ export default function LivePage() {
   function sendQuestion(e: React.FormEvent) {
     e.preventDefault();
     if (!q.trim()) return;
-    setQuestions((xs) => [...xs, { id: String(Math.random()), who: "You", text: q.trim() }]);
+    setUserQuestion(q.trim());
+    setQSent(true);
     setQ("");
   }
 
@@ -169,7 +174,6 @@ export default function LivePage() {
           <div className="overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
             <div className="flex border-b border-border">
               {[
-                { id: "agenda" as Tab, label: "Agenda", icon: ListChecks },
                 { id: "qa" as Tab, label: "Q&A", icon: MessageSquare },
                 { id: "ballot" as Tab, label: "Ballot", icon: Vote },
               ].map(({ id, label, icon: Icon }) => (
@@ -187,55 +191,54 @@ export default function LivePage() {
             </div>
 
             <div className="max-h-[420px] overflow-y-auto p-4">
-              {tab === "agenda" && (
-                <ul className="space-y-2">
-                  {event.agenda.map((a) => (
-                    <li
-                      key={a.id}
-                      className={cn(
-                        "rounded-xl border p-3",
-                        a.isCurrent
-                          ? "border-primary bg-primary/5"
-                          : "border-border bg-white",
-                      )}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="text-xs text-muted-foreground">{a.startTime}</p>
-                          <p className="text-sm font-medium text-foreground">{a.title}</p>
-                        </div>
-                        {a.isCurrent && (
-                          <span className="rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold uppercase text-white">
-                            Now
-                          </span>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-
               {tab === "qa" && (
-                <div className="flex h-full flex-col">
+                <div className="flex flex-col gap-3">
+                  <p className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                    Submitted Questions
+                  </p>
                   <ul className="space-y-2">
-                    {questions.map((item) => (
-                      <li key={item.id} className="rounded-xl bg-muted/40 p-3">
-                        <p className="text-xs font-semibold text-foreground">{item.who}</p>
-                        <p className="mt-0.5 text-sm text-muted-foreground">{item.text}</p>
+                    {MOCK_QA_QUESTIONS.map((item) => (
+                      <li key={item.id} className="rounded-xl border border-border bg-white p-3">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <p className="text-xs font-semibold text-foreground">{item.who}</p>
+                          <div className="flex items-center gap-2">
+                            {item.answered && (
+                              <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-700">
+                                <CheckCircle className="h-3 w-3" /> Addressed
+                              </span>
+                            )}
+                            <p className="text-[11px] text-muted-foreground">{item.time}</p>
+                          </div>
+                        </div>
+                        <p className="text-sm text-foreground leading-relaxed">{item.text}</p>
                       </li>
                     ))}
+                    {qSent && (
+                      <li className="rounded-xl border border-primary/20 bg-primary/5 p-3">
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <p className="text-xs font-semibold text-primary">You</p>
+                          <p className="text-[11px] text-muted-foreground">Just now · Pending review</p>
+                        </div>
+                        <p className="text-sm text-foreground leading-relaxed">{userQuestion}</p>
+                      </li>
+                    )}
                   </ul>
-                  <form onSubmit={sendQuestion} className="mt-3 flex gap-2">
-                    <input
-                      value={q}
-                      onChange={(e) => setQ(e.target.value)}
-                      placeholder="Ask the board…"
-                      className="h-10 flex-1 rounded-xl border border-input bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    />
-                    <Button type="submit" size="sm">
-                      <Send className="h-4 w-4" />
-                    </Button>
-                  </form>
+                  <p className="text-xs text-muted-foreground">
+                    Questions are reviewed by the moderator before being shown to the Chair.
+                  </p>
+                  {!qSent && (
+                    <form onSubmit={sendQuestion} className="flex gap-2">
+                      <input
+                        value={q}
+                        onChange={(e) => setQ(e.target.value)}
+                        placeholder="Submit a question to the Chair..."
+                        className="h-10 flex-1 rounded-xl border border-input bg-white px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      />
+                      <Button type="submit" size="sm" className="bg-slate-900 hover:bg-slate-800">
+                        <Send className="h-4 w-4" />
+                      </Button>
+                    </form>
+                  )}
                 </div>
               )}
 
