@@ -34,11 +34,10 @@ export default function BvnPage() {
         name="bvn"
         label="BVN"
         inputMode="numeric"
-        maxLength={11}
         placeholder="22XXXXXXXXX"
         value={bvn}
-        onChange={(e) => setBvn(e.target.value.replace(/\D/g, ""))}
-        hint="11 digits — your BVN never leaves our secure verification partner."
+        onChange={(e) => setBvn(e.target.value.replace(/\D/g, "").slice(0, 11))}
+        hint={`${bvn.length}/11 digits — your BVN never leaves our secure verification partner.`}
       />
 
       <div className="flex gap-3">
