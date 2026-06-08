@@ -12,13 +12,18 @@ import {
   LogOut,
 } from "lucide-react";
 import { cn, initialsFor } from "@/lib/utils";
-import { MOCK_USER } from "@/lib/mock-data";
+import { MOCK_USER, MOCK_EVENTS } from "@/lib/mock-data";
+
+function eventModule(pathname: string) {
+  const id = pathname.match(/^\/events\/([^/]+)/)?.[1];
+  return id ? MOCK_EVENTS.find((e) => e.id === id)?.module : undefined;
+}
 
 const NAV = [
   { label: "Home", href: "/", icon: House, match: (p: string) => p === "/" },
-  { label: "AGM", href: "/agm", icon: Building2, match: (p: string) => p.startsWith("/agm") },
-  { label: "Innovation", href: "/hackathon", icon: Lightbulb, match: (p: string) => p.startsWith("/hackathon") },
-  { label: "Launches", href: "/events", icon: Rocket, match: (p: string) => p.startsWith("/events") },
+  { label: "AGM", href: "/agm", icon: Building2, match: (p: string) => p.startsWith("/agm") || eventModule(p) === "AGM" },
+  { label: "Innovation", href: "/hackathon", icon: Lightbulb, match: (p: string) => p.startsWith("/hackathon") || eventModule(p) === "HACKATHON" },
+  { label: "Launches", href: "/events", icon: Rocket, match: (p: string) => p.startsWith("/events") && !["AGM", "HACKATHON"].includes(eventModule(p) ?? "") },
   { label: "Profile", href: "/profile", icon: UserIcon, match: (p: string) => p.startsWith("/profile") },
 ];
 
