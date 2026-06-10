@@ -88,14 +88,14 @@ function Section({
                 role="switch"
                 aria-checked={on}
                 className={cn(
-                  "relative h-6 w-11 rounded-full transition-colors",
+                  "relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200",
                   on ? "bg-primary" : "bg-muted",
                 )}
               >
                 <span
                   className={cn(
-                    "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
-                    on ? "translate-x-5" : "translate-x-0.5",
+                    "absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-[left] duration-200",
+                    on ? "left-[22px]" : "left-0.5",
                   )}
                 />
               </button>
