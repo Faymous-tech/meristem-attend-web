@@ -2,7 +2,7 @@
 import Link from "next/link";
 import {
   Building2, CalendarDays, MapPin,
-  Users, XCircle, Vote, ChevronRight,
+  Users, XCircle, Vote, ChevronRight, UserCheck,
 } from "lucide-react";
 import { MOCK_EVENTS } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
@@ -113,13 +113,20 @@ function AgmCard({ event: e }: { event: (typeof MOCK_EVENTS)[0] }) {
           <div className="pt-1">
             {onRegister ? (
               <div className="flex gap-2">
+                {e.format !== "virtual" && (
+                  <Link href={`/agm/proxy?eventId=${e.id}`}>
+                    <Button size="sm" variant="outline" className="border-slate-200 text-slate-700 hover:bg-slate-50">
+                      <UserCheck className="h-3.5 w-3.5 mr-1.5" /> Proxy
+                    </Button>
+                  </Link>
+                )}
                 <Link href="/agm/pre-vote">
-                  <Button size="sm" className="flex-1 bg-slate-900 text-white hover:bg-slate-800 border-0">
+                  <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 border-0">
                     <Vote className="h-3.5 w-3.5 mr-1.5" /> Pre-vote
                   </Button>
                 </Link>
                 <Link href={`/events/${e.id}`}>
-                  <Button size="sm" className="flex-1 bg-slate-900 text-white hover:bg-slate-800 border-0">
+                  <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 border-0">
                     <ChevronRight className="h-3.5 w-3.5 mr-1.5" /> View
                   </Button>
                 </Link>
