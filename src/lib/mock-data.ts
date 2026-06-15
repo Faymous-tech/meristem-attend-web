@@ -141,14 +141,33 @@ export const MOCK_DOCUMENTS = [
   { id: "doc_004", title: "Proxy Form — Zenith Bank 2026 AGM", type: "proxy", eventId: "evt_001", eventTitle: "Zenith Bank Plc — 2026 AGM", fileSize: "0.3 MB", uploadedAt: "2026-05-01T09:00:00Z" },
 ];
 
+export interface ChallengeSubmissionFields {
+  githubUrl: boolean;
+  demoUrl: boolean;
+  description: boolean;
+  pitchDeck: boolean;
+  pitchVideoUrl: boolean;
+  demoVideoUrl: boolean;
+  additionalDocs: boolean;
+}
+
 export const MOCK_CHALLENGE = {
   id: "chl_001", eventId: "evt_005", title: "MeriHack 2026 — FinTech Innovation Challenge",
   problemStatement: "Design and build a technology solution that improves financial inclusion, investment accessibility, or capital market participation for underserved Nigerians.",
-  prizes: [{ place: "1st Place", amount: "₦5,000,000" }, { place: "2nd Place", amount: "₦2,500,000" }, { place: "3rd Place", amount: "₦1,000,000" }],
+  prizes: [{ place: "1st Place", amount: "₦5,000,000" }, { place: "2nd Place", amount: "₦2,500,000" }, { place: "3rd Place", amount: "₦1,000,000" }, { place: "People's Choice", amount: "₦500,000" }],
   tracks: ["Digital Savings & Investment", "Capital Market Access", "RegTech & Compliance"],
-  eligibility: "Open to Nigerian citizens and residents aged 18 and above. Teams of 2–5 members.",
+  eligibility: "Open to Nigerian citizens and residents aged 18 and above. Teams of 2–5 members. At least one team member must have a technical background.",
   teamSize: { min: 2, max: 5 }, submissionDeadline: "2026-07-18",
   sponsors: ["Meristem", "NGX Group", "CBN", "SEC Nigeria"],
+  submissionFields: {
+    githubUrl: true,
+    demoUrl: true,
+    description: true,
+    pitchDeck: true,
+    pitchVideoUrl: true,
+    demoVideoUrl: false,
+    additionalDocs: false,
+  } as ChallengeSubmissionFields,
 };
 
 export const MOCK_APPLICATIONS = [
