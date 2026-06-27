@@ -470,9 +470,9 @@ export default function LandingHome() {
             </Reveal>
 
             {/* Real-time Voting — tall accent */}
-            <Reveal delay={120} className="md:row-span-2">
+            <Reveal delay={120} className="md:row-span-2 h-full">
               <div
-                className="group relative h-full min-h-80 overflow-hidden rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
+                className="group relative flex h-full flex-col min-h-80 overflow-hidden rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 style={{ background: "linear-gradient(160deg, #ea6c00 0%, #c2410c 100%)" }}
               >
                 <div className="pointer-events-none absolute -right-6 -top-6 h-32 w-32 rounded-full" style={{ background: "rgba(255,255,255,0.1)" }} />
@@ -501,12 +501,35 @@ export default function LandingHome() {
                     </div>
                   ))}
                 </div>
+
+                {/* Vote Receipt widget */}
+                <div className="mt-auto pt-5">
+                  <div className="rounded-2xl p-4" style={{ background: "rgba(0,0,0,0.2)" }}>
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                        style={{ background: "rgba(34,197,94,0.2)" }}
+                      >
+                        <CheckCircle2 className="h-4 w-4" style={{ color: "#4ade80" }} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-white">Your vote has been recorded</p>
+                        <p className="mt-0.5 text-[11px]" style={{ color: "rgba(255,255,255,0.5)" }}>
+                          Ref: #AGM-2026-00142
+                        </p>
+                        <p className="mt-0.5 text-[10px]" style={{ color: "rgba(255,255,255,0.35)" }}>
+                          Today · 10:47 AM WAT
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </Reveal>
 
             {/* KYC */}
-            <Reveal delay={160}>
-              <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <Reveal delay={160} className="h-full">
+              <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <ArrowUpRight className="absolute right-5 top-5 h-4 w-4 text-gray-200 transition-colors group-hover:text-gray-400" />
                 <ShieldCheck className="mb-3 h-7 w-7" style={{ color: "#16a34a" }} />
                 <h3 className="text-base font-bold text-gray-900">KYC & Identity Verification</h3>
@@ -517,8 +540,8 @@ export default function LandingHome() {
             </Reveal>
 
             {/* Innovation */}
-            <Reveal delay={200}>
-              <div className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <Reveal delay={200} className="h-full">
+              <div className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
                 <ArrowUpRight className="absolute right-5 top-5 h-4 w-4 text-gray-200 transition-colors group-hover:text-gray-400" />
                 <Lightbulb className="mb-3 h-7 w-7" style={{ color: "#7c22c9" }} />
                 <h3 className="text-base font-bold text-gray-900">Innovation Challenges</h3>
@@ -968,6 +991,25 @@ export default function LandingHome() {
           </Reveal>
         </div>
       </section>
+
+      {/* ─── CTA / Footer separator ──────────────────────────────── */}
+      <div
+        className="flex items-center justify-center overflow-hidden py-8"
+        style={{ background: "#0f172a", borderTop: "1px solid rgba(255,255,255,0.05)" }}
+      >
+        <span
+          className="pointer-events-none select-none font-black tracking-tight"
+          aria-hidden
+          style={{
+            fontSize: "clamp(56px, 12vw, 140px)",
+            color: "rgba(234,108,0,0.07)",
+            letterSpacing: "-0.04em",
+            lineHeight: 1,
+          }}
+        >
+          ATTEND
+        </span>
+      </div>
 
     </div>
   );
