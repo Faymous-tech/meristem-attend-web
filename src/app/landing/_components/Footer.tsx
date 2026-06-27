@@ -12,7 +12,7 @@ const LEGAL_LINKS = ["Privacy Policy", "Terms of Use", "Cookie Policy"];
 
 export function LandingFooter() {
   return (
-    <footer style={{ background: "#000000" }}>
+    <footer style={{ background: "#ffffff", borderTop: "1px solid #e5e5e5" }}>
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           {/* Brand */}
@@ -23,10 +23,10 @@ export function LandingFooter() {
               style={{
                 height: 24,
                 width: "auto",
-                filter: "brightness(0) invert(1)",
+                filter: "brightness(0)",
               }}
             />
-            <p className="mt-3 text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
+            <p className="mt-3 text-sm leading-relaxed" style={{ color: "#6b7280" }}>
               Enterprise events infrastructure for Nigeria&apos;s capital markets — built for the institutions that move markets.
             </p>
             <div className="mt-6 flex items-center gap-3">
@@ -34,8 +34,8 @@ export function LandingFooter() {
                 <a
                   key={i}
                   href="#"
-                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors"
-                  style={{ background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.45)" }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-gray-200"
+                  style={{ background: "#f3f4f6", color: "#374151" }}
                   aria-label="Social link"
                 >
                   <Icon className="h-3.5 w-3.5" />
@@ -47,14 +47,14 @@ export function LandingFooter() {
           {/* Links */}
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">Platform</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Platform</p>
               <ul className="space-y-2.5">
                 {PLATFORM_LINKS.map((l) => (
                   <li key={l.label}>
                     <Link
                       href={l.href}
-                      className="text-sm transition-colors hover:text-white"
-                      style={{ color: "rgba(255,255,255,0.45)" }}
+                      className="text-sm transition-colors hover:text-[#0f172a]"
+                      style={{ color: "#6b7280" }}
                     >
                       {l.label}
                     </Link>
@@ -63,14 +63,14 @@ export function LandingFooter() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">Company</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Company</p>
               <ul className="space-y-2.5">
                 {COMPANY_LINKS.map((l) => (
                   <li key={l}>
                     <a
                       href="#"
-                      className="text-sm transition-colors hover:text-white"
-                      style={{ color: "rgba(255,255,255,0.45)" }}
+                      className="text-sm transition-colors hover:text-[#0f172a]"
+                      style={{ color: "#6b7280" }}
                     >
                       {l}
                     </a>
@@ -79,14 +79,14 @@ export function LandingFooter() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-white">Legal</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Legal</p>
               <ul className="space-y-2.5">
                 {LEGAL_LINKS.map((l) => (
                   <li key={l}>
                     <a
                       href="#"
-                      className="text-sm transition-colors hover:text-white"
-                      style={{ color: "rgba(255,255,255,0.45)" }}
+                      className="text-sm transition-colors hover:text-[#0f172a]"
+                      style={{ color: "#6b7280" }}
                     >
                       {l}
                     </a>
@@ -96,17 +96,17 @@ export function LandingFooter() {
             </div>
           </div>
         </div>
+      </div>
 
-        <div
-          className="mt-12 flex flex-col items-center justify-between gap-2 border-t pt-8 md:flex-row"
-          style={{ borderColor: "rgba(255,255,255,0.08)" }}
-        >
-          <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+      {/* Copyright strip */}
+      <div style={{ background: "#f5f5f5", borderTop: "1px solid #e5e5e5" }}>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-5 py-5 md:flex-row md:px-8">
+          <p className="text-xs" style={{ color: "#9ca3af" }}>
             © 2026 Meristem Attend. All rights reserved.
           </p>
-          <p className="text-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+          <p className="text-xs" style={{ color: "#9ca3af" }}>
             Built by{" "}
-            <span style={{ color: "rgba(255,255,255,0.55)" }}>Meristem Securities Ltd</span>
+            <span style={{ color: "#374151" }}>Meristem Securities Ltd</span>
           </p>
         </div>
       </div>
