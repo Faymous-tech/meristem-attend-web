@@ -470,7 +470,7 @@ export default function LandingHome() {
             </Reveal>
 
             {/* Real-time Voting — tall accent */}
-            <Reveal delay={120} className="md:row-span-2 h-full">
+            <Reveal delay={120} className="md:row-span-3 h-full">
               <div
                 className="group relative flex h-full flex-col min-h-80 overflow-hidden rounded-3xl p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"
                 style={{ background: "linear-gradient(160deg, #ea6c00 0%, #c2410c 100%)" }}
@@ -992,24 +992,6 @@ export default function LandingHome() {
         </div>
       </section>
 
-      {/* ─── CTA / Footer separator ──────────────────────────────── */}
-      <div
-        className="flex items-center justify-center overflow-hidden py-8"
-        style={{ background: "#0f172a", borderTop: "1px solid rgba(255,255,255,0.05)" }}
-      >
-        <span
-          className="pointer-events-none select-none font-black tracking-tight"
-          aria-hidden
-          style={{
-            fontSize: "clamp(56px, 12vw, 140px)",
-            color: "rgba(234,108,0,0.07)",
-            letterSpacing: "-0.04em",
-            lineHeight: 1,
-          }}
-        >
-          ATTEND
-        </span>
-      </div>
 
     </div>
   );

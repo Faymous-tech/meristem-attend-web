@@ -12,7 +12,7 @@ const LEGAL_LINKS = ["Privacy Policy", "Terms of Use", "Cookie Policy"];
 
 export function LandingFooter() {
   return (
-    <footer style={{ background: "#0f172a" }}>
+    <footer style={{ background: "#000000" }}>
       <div className="mx-auto max-w-7xl px-5 py-16 md:px-8">
         <div className="flex flex-col gap-12 md:flex-row md:items-start md:justify-between">
           {/* Brand */}
