@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Twitter, Linkedin, Instagram } from "lucide-react";
 
 const PLATFORM_LINKS = [
+  { label: "Features", href: "/landing/features" },
   { label: "Virtual AGMs", href: "/landing/features/agm" },
   { label: "Product Launches", href: "/landing/features/launches" },
   { label: "Innovation Challenges", href: "/landing/features/innovation" },
@@ -21,11 +22,7 @@ export function LandingFooter() {
             <img
               src="/attend-logo.png"
               alt="Attend"
-              style={{
-                height: 24,
-                width: "auto",
-                filter: "brightness(0)",
-              }}
+              style={{ height: 24, width: "auto", filter: "brightness(0)" }}
             />
             <p className="mt-3 text-sm leading-relaxed" style={{ color: "#6b7280" }}>
               Enterprise events infrastructure for Nigeria&apos;s capital markets — built for the institutions that move markets.
@@ -48,7 +45,9 @@ export function LandingFooter() {
           {/* Links */}
           <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Platform</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>
+                Platform
+              </p>
               <ul className="space-y-2.5">
                 {PLATFORM_LINKS.map((l) => (
                   <li key={l.label}>
@@ -64,15 +63,13 @@ export function LandingFooter() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Company</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>
+                Company
+              </p>
               <ul className="space-y-2.5">
                 {COMPANY_LINKS.map((l) => (
                   <li key={l}>
-                    <a
-                      href="#"
-                      className="text-sm transition-colors hover:text-[#0f172a]"
-                      style={{ color: "#6b7280" }}
-                    >
+                    <a href="#" className="text-sm transition-colors hover:text-[#0f172a]" style={{ color: "#6b7280" }}>
                       {l}
                     </a>
                   </li>
@@ -80,15 +77,13 @@ export function LandingFooter() {
               </ul>
             </div>
             <div>
-              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>Legal</p>
+              <p className="mb-4 text-xs font-semibold uppercase tracking-wider" style={{ color: "#0f172a" }}>
+                Legal
+              </p>
               <ul className="space-y-2.5">
                 {LEGAL_LINKS.map((l) => (
                   <li key={l}>
-                    <a
-                      href="#"
-                      className="text-sm transition-colors hover:text-[#0f172a]"
-                      style={{ color: "#6b7280" }}
-                    >
+                    <a href="#" className="text-sm transition-colors hover:text-[#0f172a]" style={{ color: "#6b7280" }}>
                       {l}
                     </a>
                   </li>

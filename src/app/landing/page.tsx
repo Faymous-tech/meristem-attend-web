@@ -136,7 +136,7 @@ export default function LandingHome() {
       {/* ─── Hero ────────────────────────────────────────────────── */}
       <section className="relative min-h-screen overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=1800&q=80&fit=crop"
+          src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1800&q=80&fit=crop"
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -213,7 +213,7 @@ export default function LandingHome() {
                   Get Started <ArrowRight className="h-4 w-4" />
                 </Link>
                 <Link
-                  href="/landing/features/agm"
+                  href="/landing/features"
                   className="inline-flex items-center gap-2 rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-all hover:border-white/50 hover:bg-white/10"
                 >
                   See the platform
@@ -431,7 +431,7 @@ export default function LandingHome() {
                 </h2>
               </div>
               <Link
-                href="/landing/features/agm"
+                href="/landing/features"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors hover:opacity-70"
                 style={{ color: "#ea6c00" }}
               >

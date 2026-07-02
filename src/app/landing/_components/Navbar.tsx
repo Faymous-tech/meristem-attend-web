@@ -1,22 +1,13 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight, Menu, X, ChevronDown } from "lucide-react";
-
-const FEATURE_LINKS = [
-  { label: "Virtual AGMs", desc: "Compliant shareholder meetings", href: "/landing/features/agm" },
-  { label: "Product Launches", desc: "Controlled, branded events", href: "/landing/features/launches" },
-  { label: "Innovation Challenges", desc: "Hackathons & competitions", href: "/landing/features/innovation" },
-  { label: "General Events", desc: "Conferences & seminars", href: "/landing/features/general" },
-];
+import { ArrowRight, Menu, X } from "lucide-react";
 
 export function LandingNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [featuresOpen, setFeaturesOpen] = useState(false);
   const pathname = usePathname();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === "/landing";
   const lightBg = !isHome || scrolled;
@@ -26,16 +17,6 @@ export function LandingNavbar() {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setFeaturesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   return (
@@ -63,51 +44,21 @@ export function LandingNavbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-7 md:flex">
-          <div className="relative" ref={dropdownRef}>
-            <button
-              onClick={() => setFeaturesOpen(!featuresOpen)}
-              className="flex items-center gap-1 text-sm font-medium transition-colors"
-              style={{
-                color: featuresActive
-                  ? "#ea6c00"
-                  : lightBg
-                  ? "#374151"
-                  : "rgba(255,255,255,0.82)",
-                fontWeight: featuresActive ? 600 : 500,
-              }}
-            >
-              Features
-              <ChevronDown
-                className="h-3.5 w-3.5 transition-transform duration-200"
-                style={{ transform: featuresOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-              />
-            </button>
-
-            {featuresOpen && (
-              <div
-                className="absolute left-1/2 top-full mt-3 w-64 -translate-x-1/2 rounded-2xl border border-gray-100 bg-white p-2"
-                style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.12)" }}
-              >
-                {FEATURE_LINKS.map((f) => (
-                  <Link
-                    key={f.href}
-                    href={f.href}
-                    onClick={() => setFeaturesOpen(false)}
-                    className="block rounded-xl px-4 py-3 transition-colors hover:bg-gray-50"
-                  >
-                    <p
-                      className="text-sm font-semibold"
-                      style={{ color: pathname === f.href ? "#ea6c00" : "#111827" }}
-                    >
-                      {f.label}
-                    </p>
-                    <p className="mt-0.5 text-xs text-gray-400">{f.desc}</p>
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+        <nav className="hidden items-center md:flex">
+          <Link
+            href="/landing/features"
+            className="text-sm font-medium transition-colors"
+            style={{
+              color: featuresActive
+                ? "#ea6c00"
+                : lightBg
+                ? "#374151"
+                : "rgba(255,255,255,0.82)",
+              fontWeight: featuresActive ? 600 : 500,
+            }}
+          >
+            Features
+          </Link>
         </nav>
 
         {/* Desktop right */}
@@ -143,20 +94,14 @@ export function LandingNavbar() {
       {menuOpen && (
         <div className="border-t border-gray-100 bg-white px-5 py-4 md:hidden">
           <nav className="space-y-0.5">
-            <p className="px-3 pb-1 pt-2 text-[10px] font-bold uppercase tracking-wider text-gray-400">
+            <Link
+              href="/landing/features"
+              onClick={() => setMenuOpen(false)}
+              className="block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
+              style={{ color: featuresActive ? "#ea6c00" : "#374151" }}
+            >
               Features
-            </p>
-            {FEATURE_LINKS.map((f) => (
-              <Link
-                key={f.href}
-                href={f.href}
-                onClick={() => setMenuOpen(false)}
-                className="block rounded-xl px-3 py-2.5 text-sm font-medium transition-colors"
-                style={{ color: pathname === f.href ? "#ea6c00" : "#374151" }}
-              >
-                {f.label}
-              </Link>
-            ))}
+            </Link>
           </nav>
           <div className="mt-4 space-y-2 border-t border-gray-100 pt-4">
             <Link
