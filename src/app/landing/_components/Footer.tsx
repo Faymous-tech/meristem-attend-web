@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Twitter, Linkedin, Instagram } from "lucide-react";
 
 const PLATFORM_LINKS = [
-  { label: "Features", href: "/landing/features" },
-  { label: "How it works", href: "/landing/how-it-works" },
-  { label: "Pricing", href: "/landing/pricing" },
+  { label: "Virtual AGMs", href: "/landing/features/agm" },
+  { label: "Product Launches", href: "/landing/features/launches" },
+  { label: "Innovation Challenges", href: "/landing/features/innovation" },
+  { label: "General Events", href: "/landing/features/general" },
 ];
 
 const COMPANY_LINKS = ["About", "Careers", "Press", "Contact"];
